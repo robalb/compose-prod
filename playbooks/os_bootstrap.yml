@@ -1,0 +1,6 @@
+- name: "Bootstrap a vps"
+  hosts: all
+  become: true
+  roles:
+    - vps_bootstrap
+

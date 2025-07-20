@@ -1,0 +1,22 @@
+all:
+  # all servers, listed by their identifier name.
+  # Once you add a server here, you can declare its
+  # role (for example: staging, production, test)
+  # by referencing its name in the children section
+  hosts:
+    em-hetzner-eu-1: em.staging
+
+  # logical grouping of the existing servers.
+  # each group defined here can have dedicated
+  # variables defined in /group_vars/.
+  children:
+    em-staging:
+      hosts:
+        em-hetzner-eu-1:
+    staging:
+      hosts:
+        # TODO: add staging servers here
+    production:
+      hosts:
+        # TODO: add production servers here
+

@@ -1,0 +1,5 @@
+ansible_python_interpreter: /usr/bin/python3
+vps_bootstrap__user:
+  name: "admin"
+  key_comment: "vps admin"
+  key_path: "~/.ssh/id_emanuel_staging"
