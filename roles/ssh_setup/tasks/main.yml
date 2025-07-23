@@ -1,8 +1,8 @@
 ---
-- name: Check if user {{ vps_bootstrap__user.name }} already exists on remote host
+- name: Check if user {{ ssh_setup__user.name }} already exists on remote host
   ansible.builtin.getent:
     database: passwd
-    key: "{{ vps_bootstrap__user.name }}"
+    key: "{{ ssh_setup__user.name }}"
   failed_when: false
   changed_when: false
 
@@ -12,23 +12,23 @@
 
 - name: Check if the selected ssh key already exists on the system
   stat:
-    path: "{{ vps_bootstrap__user.key_path }}"
+    path: "{{ ssh_setup__user.key_path }}"
   register: ssh_key_file_stat
 
 - name: Generate SSH keypair for user if not present (control node)
   when: must_copy_key and not ssh_key_file_stat.stat.exists
   community.crypto.openssh_keypair:
-    path: "{{ vps_bootstrap__user.key_path | expanduser }}"
+    path: "{{ ssh_setup__user.key_path | expanduser }}"
     passphrase: ""
     type: "ed25519"
-    comment: "{{ vps_bootstrap__user.key_comment }}"
+    comment: "{{ ssh_setup__user.key_comment }}"
     force: false
   become: false
   delegate_to: localhost
 
 - name: Ensure the new user exists
   ansible.builtin.user:
-    name: "{{ vps_bootstrap__user.name }}"
+    name: "{{ ssh_setup__user.name }}"
     shell: /bin/bash
     create_home: true
     groups: sudo
@@ -38,21 +38,21 @@
 
 - name: Ensure sudo access without a password
   ansible.builtin.lineinfile:
-    path: "/etc/sudoers.d/{{ vps_bootstrap__user.name }}"
-    line: "{{ vps_bootstrap__user.name }} ALL=(ALL) NOPASSWD:ALL"
+    path: "/etc/sudoers.d/{{ ssh_setup__user.name }}"
+    line: "{{ ssh_setup__user.name }} ALL=(ALL) NOPASSWD:ALL"
     create: true
     validate: "visudo -cf %s"
 
 - name: Install public key on remote user authorized_keys if not present
   when: must_copy_key
   ansible.builtin.authorized_key:
-    user: "{{ vps_bootstrap__user.name }}"
+    user: "{{ ssh_setup__user.name }}"
     state: present
-    key: "{{ lookup('file', vps_bootstrap__user.key_path | expanduser ~ '.pub') }}"
+    key: "{{ lookup('file', ssh_setup__user.key_path | expanduser ~ '.pub') }}"
 
 - name: Harden SSH - Disable root login and password authentication
   ansible.builtin.lineinfile:
-    path: "{{ vps_bootstrap__sshd_config_path }}"
+    path: "{{ ssh_setup__sshd_config_path }}"
     regexp: "^{{ item.key }}"
     line: "{{ item.value }}"
     state: present

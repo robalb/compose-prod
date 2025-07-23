@@ -1,0 +1,6 @@
+- name: "Setup the initial ssh access to the vps"
+  hosts: all
+  become: true
+  roles:
+    - ssh_setup
+

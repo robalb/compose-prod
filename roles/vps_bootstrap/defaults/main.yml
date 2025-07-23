@@ -1,3 +1,0 @@
----
-vps_bootstrap__sshd_service: ssh
-vps_bootstrap__sshd_config_path: /etc/ssh/sshd_config

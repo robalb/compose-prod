@@ -10,7 +10,7 @@ https://redhat-cop.github.io/automation-good-practices/
 
 - variables should be defined in two places only: In the `defaults/main.yml` section of a role,
   and in the `group_vars/<name>/main.yml` section.
-- prefix all variables used by a role with the role name, and if you want a default value define it in `defaults/main.yml`.
+- prefix all variables used by a role with the role name. Optionally define a default value define it in `defaults/main.yml`.
 - prefix all generic variables defined in `group_vars/<name>/main.yml` with `_`, and only use them to explicity override role variables:
   ```
   #group_vars/all/main.yml
@@ -34,7 +34,7 @@ With these additional rules, following variables becomes verbose, but simple:
 - when you meet a variable in a role, where is it defined? the default value is in `rolename/defaults/main.yml`.
   it can be overridden in `group_vars/groupname/main.yml`. Ansible will not 
   start if the variable is not defined in one of those two places.
-  Remember the [variable lookup precendence](https://gist.github.com/ekreutz/301c3d38a50abbaad38e638d8361a89e).
+  Remember the [variable lookup precendence](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#understanding-variable-precedence).
   variables defined in group_vars will override defaults values.
 
 
@@ -42,4 +42,8 @@ With these additional rules, following variables becomes verbose, but simple:
 
 Is this [web scale](https://www.youtube.com/watch?v=b2F-DItXtZs)?
 yes, it's web scale. And blazing fast
+
+
+## TODO
+
 

@@ -2,5 +2,5 @@
 - name: Reload SSH
   become: true
   service:
-    name: "{{ vps_bootstrap__sshd_service }}"
+    name: "{{ ssh_setup__sshd_service }}"
     state: reloaded
