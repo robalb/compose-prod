@@ -1,0 +1,10 @@
+---
+- name: Install development tools
+  ansible.builtin.apt:
+    name:
+      - curl
+      - vim
+      - neovim
+      - htop
+    state: present
+    update_cache: true

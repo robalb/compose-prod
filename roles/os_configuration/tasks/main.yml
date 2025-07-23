@@ -1,0 +1,14 @@
+# Disable swap
+- name: Install devtools
+  import_tasks: 010_devtools.yml
+
+- name: Disable swap
+  import_tasks: 020_swapoff.yml
+  when:
+    - not os_configuration__swap_enabled
+
+- name: Disable firewall
+  import_tasks: 030_firewalloff.yml
+
+- name: Install docker
+  import_tasks: 050_docker.yml

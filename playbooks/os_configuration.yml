@@ -1,0 +1,5 @@
+- name: "configure the os base layer"
+  hosts: all
+  become: true
+  roles:
+    - os_configuration
