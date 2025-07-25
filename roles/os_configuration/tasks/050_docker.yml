@@ -1,5 +1,7 @@
 # docker installation, following the official guide for ubuntu
 # https://docs.docker.com/engine/install/ubuntu/#set-up-the-repository
+# TODO: follow
+# https://github.com/kubernetes-sigs/kubespray/blob/master/roles/container-engine/docker/tasks/main.yml
 ---
 - name: install docker requirements
   ansible.builtin.apt:
@@ -57,13 +59,3 @@
     name: "{{ os_configuration__admin_name }}"
     groups: docker
     append: true
-
-# - name: Create the traefik proxy docker network
-#   docker_network:
-#     name: traefik-proxy
-#
-# - name: Copy docker compose control plane
-#   ansible.builtin.copy:
-#     src: "{{ playbook_dir }}/../control-plane"
-#     dest: /home/al/
-#     owner: al

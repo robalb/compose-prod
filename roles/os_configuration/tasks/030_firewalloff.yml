@@ -2,17 +2,17 @@
 - name: Populate service facts
   ansible.builtin.service_facts:
 
-# It's good practice to disable firewall rules before a
-# k3s installation: https://docs.k3s.io/installation/requirements
-# Disabling UFW via service.disable does not guarantee
-# that existing firewall rules will be flushed.
 - name: Disable UFW firewall and flush rules
-  when: ansible_facts.services['ufw.service'] is defined
+  when:
+    - ansible_facts.services['ufw.service'] is defined
+    - ansible_facts.services['ufw.service'].state == 'running'
   community.general.ufw:
     state: disabled
 
 - name: Disable Firewalld
-  when: ansible_facts.services['firewalld.service'] is defined
+  when:
+    - ansible_facts.services['firewalld.service'] is defined
+    - ansible_facts.services['firewalld.service'].state == 'running'
   ansible.builtin.service:
     name: firewalld
     state: stopped

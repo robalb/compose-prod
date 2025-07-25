@@ -1,0 +1,10 @@
+
+# - name: Create the traefik proxy docker network
+#   docker_network:
+#     name: traefik-proxy
+#
+# - name: Copy docker compose control plane
+#   ansible.builtin.copy:
+#     src: "{{ playbook_dir }}/../control-plane"
+#     dest: /home/al/
+#     owner: al
