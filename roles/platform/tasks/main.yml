@@ -1,7 +1,13 @@
+---
+- name: Create the traefik proxy docker network
+  docker_network:
+    name: traefik-proxy
 
-# - name: Create the traefik proxy docker network
-#   docker_network:
-#     name: traefik-proxy
+- name: manage the traefik ingress
+  import_tasks: 020_traefik.yml
+
+- name: manage the platform services
+  import_tasks: 020_platform_services.yml
 #
 # - name: Copy docker compose control plane
 #   ansible.builtin.copy:

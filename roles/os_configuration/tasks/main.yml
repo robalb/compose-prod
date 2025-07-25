@@ -12,3 +12,8 @@
 
 - name: Install docker
   import_tasks: 050_docker.yml
+
+- name: Set the server motd
+  import_tasks: 060_motd.yml
+  when:
+    - os_configuration__custom_motd

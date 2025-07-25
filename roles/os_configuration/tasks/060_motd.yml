@@ -1,0 +1,28 @@
+---
+- name: Check if /etc/update-motd.d exists
+  stat:
+    path: /etc/update-motd.d
+  register: motd_dir
+
+- name: Find all files in /etc/update-motd.d
+  find:
+    paths: /etc/update-motd.d
+    file_type: file
+  register: motd_files
+  when: motd_dir.stat.exists
+
+- name: Disable all executable scripts in /etc/update-motd.d
+  file:
+    path: "{{ item.path }}"
+    mode: '0644'
+  loop: "{{ motd_files.files }}"
+  when: motd_dir.stat.exists
+
+- name: Deploy custom MOTD script
+  template:
+    src: 00-custom-motd.j2
+    dest: /etc/update-motd.d/00-custom-motd
+    mode: '0755'
+    owner: root
+    group: root
+  when: motd_dir.stat.exists

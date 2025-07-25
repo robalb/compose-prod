@@ -1,1 +1,2 @@
 os_configuration__swap_enabled: false
+os_configuration__custom_motd: true
