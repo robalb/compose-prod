@@ -35,17 +35,11 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.size=500MB'
-      # - '--web.config.file=/etc/prometheus/web.yml'
+      - '--storage.tsdb.retention.size=2GB'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     labels:
       - 'traefik.enable=false'
-      # uncomment to expose prometheus to the world. This is not safe
-      # - 'traefik.http.routers.prometheus.rule=Host(`metrics.${BASE_DOMAIN}`)'
-      # - 'traefik.http.routers.prometheus.entrypoints=websecure'
-      # - 'traefik.http.routers.prometheus.tls=true'
-      # - 'traefik.http.routers.prometheus.tls.certresolver=myresolver'
     networks:
       - traefik-proxy
 
