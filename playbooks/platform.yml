@@ -1,0 +1,5 @@
+- name: "install the base platform services and ingress"
+  hosts: all
+  become: true
+  roles:
+    - platform

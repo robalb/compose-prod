@@ -4,6 +4,8 @@ ansible_python_interpreter: /usr/bin/python3
 
 _admin_name: "admin"
 os_configuration__admin_name: "{{ _admin_name }}"
+platform__admin_name: "{{ _admin_name }}"
+
 ssh_setup__user:
   name: "{{ _admin_name }}"
   key_comment: "vps admin"

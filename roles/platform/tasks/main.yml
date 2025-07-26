@@ -3,14 +3,39 @@
   docker_network:
     name: traefik-proxy
 
-- name: manage the traefik ingress
-  import_tasks: 020_traefik.yml
+- name: Ensure the platform folder exists
+  file:
+    path: "{{ platform__folder }}"
+    state: directory
+    owner: "{{ platform__admin_name }}"
+    group: "{{ platform__admin_name }}"
+    mode: '0755'
 
-- name: manage the platform services
-  import_tasks: 020_platform_services.yml
-#
-# - name: Copy docker compose control plane
-#   ansible.builtin.copy:
-#     src: "{{ playbook_dir }}/../control-plane"
-#     dest: /home/al/
-#     owner: al
+- name: Synchronize platform docker compose
+  synchronize:
+    src: "{{ role_path }}/files/platform_services/"
+    dest: "{{ platform__folder }}"
+    recursive: true
+    delete: true       # deletes files in dest not present in src
+    rsync_opts:
+      - "--chmod=755"
+
+- name: Generate the .env file for the platform docker compose
+  copy:
+    dest: "{{ platform__folder }}.env"
+    content: |
+      BASE_DOMAIN={{ platform__base_domain }}
+    owner: "{{ platform__admin_name }}"
+    group: "{{ platform__admin_name }}"
+    mode: '0755'
+
+    # - name: rerun docker compose
+    #   shell: cd /home/al/control-plane && docker compose up -d
+    #   register: output
+
+    # - name: Show stdout
+    #   ansible.builtin.debug:
+    #     var: output.stdout_lines
+    # - name: Show stderr
+    #   ansible.builtin.debug:
+    #     var: output.stderr_lines

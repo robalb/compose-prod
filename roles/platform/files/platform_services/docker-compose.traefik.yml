@@ -1,0 +1,26 @@
+networks:
+  traefik-proxy:
+    external: true
+
+services:
+  traefik:
+    image: "traefik:v2.10"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-dashboard-http-router.tls=true"
+      - "traefik.http.routers.traefik-dashboard-http-router.tls.certresolver=myresolver"
+      - "traefik.http.routers.traefik-dashboard-http-router.entrypoints=websecure"
+      - "traefik.http.routers.traefik-dashboard-http-router.rule=Host(`traefik.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.traefik-dashboard-http-router.service=api@internal"
+      - "traefik.docker.network=traefik-proxy"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik/traefik.yml:/etc/traefik/traefik.yml"
+      # persistent data volumes
+      - "./data-traefik/letsencrypt:/letsencrypt"
+    networks:
+      - traefik-proxy

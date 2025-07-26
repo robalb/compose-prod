@@ -1,0 +1,1 @@
+platform__folder: "/home/{{ platform__admin_name }}/platform/"

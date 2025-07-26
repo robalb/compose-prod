@@ -1,0 +1,105 @@
+volumes:
+  grafana-data: {}
+  prometheus-data: {}
+  loki-data: {}
+
+networks:
+  traefik-proxy:
+    external: true
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.tls.certresolver=myresolver"
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - grafana-data:/var/lib/grafana
+    environment:
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    networks:
+      - traefik-proxy
+
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    user: root
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.size=500MB'
+      # - '--web.config.file=/etc/prometheus/web.yml'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    labels:
+      - 'traefik.enable=false'
+      # uncomment to expose prometheus to the world. This is not safe
+      # - 'traefik.http.routers.prometheus.rule=Host(`metrics.${BASE_DOMAIN}`)'
+      # - 'traefik.http.routers.prometheus.entrypoints=websecure'
+      # - 'traefik.http.routers.prometheus.tls=true'
+      # - 'traefik.http.routers.prometheus.tls.certresolver=myresolver'
+    networks:
+      - traefik-proxy
+
+  node-exporter:
+    image: prom/node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command: 
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    networks:
+      - traefik-proxy
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    restart: unless-stopped
+    # https://github.com/google/cadvisor/issues/2523#issuecomment-785094428
+    command:
+      - '-housekeeping_interval=10s'
+      - '-docker_only=true'
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    expose:
+      - '8080'
+    networks:
+      - traefik-proxy
+
+  loki:
+    image: grafana/loki:2.8.0
+    restart: unless-stopped
+    expose:
+      - "3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki-data:/loki
+      - ./loki/local-config.yml:/etc/loki/local-config.yaml
+    networks:
+      - traefik-proxy
+
+  promtail:
+    image: grafana/promtail:2.8.0
+    restart: unless-stopped
+    volumes:
+      - ./promtail/config.yml:/etc/promtail/config.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - traefik-proxy

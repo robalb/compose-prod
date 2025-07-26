@@ -1,0 +1,545 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "increase(morsechat_bad_messages[10m])",
+          "instant": false,
+          "legendFormat": "n word",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "expr": "increase(morsechat_connection_denied{reason=\"bad\"}[10m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "bad user",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "expr": "increase(morsechat_connection_denied{reason=\"max_ip\"}[10m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "clients with same ip",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "bad events",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 31,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "avg_over_time(container_memory_usage_bytes{name=\"morsechat-go-morse-1\"}[30m])",
+          "hide": false,
+          "instant": false,
+          "interval": "10",
+          "legendFormat": "{{name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "memory usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "bucketOffset": 0,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "builder",
+          "expr": "histogram_quantile(0.95, sum by(le) (rate(morsechat_messages_wpm_bucket[1h])))",
+          "instant": false,
+          "legendFormat": "wpm distribution",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "wpm distribution",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "morsechat_connected_users{channel!=\"\"}",
+          "instant": false,
+          "legendFormat": "{{channel}}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "morsechat_connected_users{channel=\"\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "users in limbo",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Online users",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 32,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.0.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "increase(morsechat_messages[30m])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "messages",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "messages sent",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Row title",
+      "type": "row"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "morse chat",
+  "uid": "bcd680a9-1009-4202-8b1c-c9455c2e1b7a",
+  "version": 4,
+  "weekStart": ""
+}

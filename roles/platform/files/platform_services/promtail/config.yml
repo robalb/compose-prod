@@ -1,0 +1,32 @@
+#
+# configure promtail to scrape docker logs
+# https://grafana.com/docs/loki/latest/clients/promtail/configuration/#docker_sd_config
+# https://cylab.be/blog/241/use-loki-to-monitor-the-logs-of-your-docker-
+#
+# Note: promtail with docker_sd_configs is the preferred way
+# to scrape docker logs. The grafana docker logs plugin has several issues
+# that make it a suboptimal choice. https://github.com/grafana/loki/issues/2361
+
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker
+    # use docker.sock to filter containers
+    # https://grafana.com/docs/loki/latest/clients/promtail/configuration/#docker_sd_config
+    docker_sd_configs:
+      - host: "unix:///var/run/docker.sock"
+        refresh_interval: 15s
+        # scrape only the logs of a specific docker compose project
+        # filters:
+        #   - name: label
+        #     values: ["com.docker.compose.project=myapp"]
+    # use container name to create a loki label
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
