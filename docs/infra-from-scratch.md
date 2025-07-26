@@ -30,8 +30,7 @@ To run the bootstrap playbook against a remote host with a root admin password:
 
 To run the bootstrap playbook against a remote host that already has an ssh key and non-root user:
 
-1. Make sure the ssh key is stored in your file system. It's good practice to keep all keys in a path similar to
-`~/.ssh/k3s_cluster_demo`, and manage the host ssh access in your `.ssh/config` file
+1. Make sure the ssh key is stored in your file system. It's good practice to keep all keys in your `~/.ssh/`folder, and manage the host ssh access in your `.ssh/config` file
 
 1. Configure the name of your non-root user in `group_vars/all/main.yml` in the `_admin_name` variable.
 
