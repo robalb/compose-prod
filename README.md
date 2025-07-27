@@ -56,12 +56,7 @@ If you want to follow the Continuos-Deployment approach, the steps are extremely
   certificate.
 
 If you want to manually manage your projects, that's fine too!
-Just copy your docker-compose files into the server, and launch them with:
-
-```
-docker compose up -d
-```
-
+Just copy your docker-compose files into the server, and launch them with `docker compose up -d`  
 Your project logs and metrics will be available on the Grafana dashboard.
 
 ## FAQ
