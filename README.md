@@ -50,8 +50,7 @@ If you want to follow the Continuos-Deployment approach, the steps are extremely
       compose_path: "/compose-prod/"
       autodeploy_on_change: true
   ```
-- That's it!  
-  The system will monitor your project repository, and will automatically deploy 
+- That's it! The system will monitor your project repository, and will automatically deploy 
   your docker-compose when you modify it.  
   If you deployed a web server, it will instantly be availabe online, with a valid TLS 
   certificate.
