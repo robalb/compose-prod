@@ -1,8 +1,8 @@
 # deploy a new project
 
-We also assume that you already followed the steps to:
+We assume that you already followed the steps to:
 - [configured your computer](./devenv-setup.md) to work on the infrastructure
-- [setup the infrastructure](./infra-from-scratch.md)
+- [setup the infrastructure](./infra-from-scratch.md) on a remote server, connected to the internet, with a public IP.
 
 Now that your infrastructure is ready, you can deply your projects to it
 
