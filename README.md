@@ -49,7 +49,7 @@ If you want to follow a continuos-deployment approach:
       autodeploy_on_change: true
   ```
 - That's it! The system running on your server will monitor your project repository, and will automatically deploy 
-  your docker-compose when you modify it.  
+  your docker-compose when it detects a change. 
   If you deployed a web server, it will instantly be availabe online, with a valid TLS 
   certificate.
 
