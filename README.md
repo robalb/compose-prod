@@ -16,7 +16,28 @@ Features:
 
 - [setup your computer to work on the infrastructure](./docs/devenv-setup.md)
 - [setup the infrastructure from scratch](./docs/infra-from-scratch.md)
+- [deploy a new project](./docs/deploy.md)
 - [Work on an existing infrastructure](#Work-on-an-existing-infrastructure)
+
+## Overview
+
+This ansible project will configure your ubuntu server, install docker,
+and set up the following folder structure in the home folder of the 
+administrator user:
+
+```
+home/admin/
+├── platform/
+│   ├── docker-compose.platform.yml
+│   └── docker-compose.traefik.yml
+├── project-name1/
+│   └── docker-compose.yml
+└── project-name2/
+    └── docker-compose.yml
+```
+
+each project `project-name` you define, will be copied in the same home folder.
+
 
 ### Work on an existing infrastructure
 
@@ -42,10 +63,10 @@ ansible-vault edit group_vars/staging/vault.yml
 - __Does this scale?__
   Chances are this is not the question you should be asking:  
   No. This Infrastructure will run on a single-server only, and cannot scale to multiple nodes.  
-  But most project will never need to scale. A single web server running on a `4$` VPS
+  But most project will never need to scale. This infrastructure running on a `4$` VPS
   can handle more than `10k` cuncurrent users depending on the workload.  
   Know your system: are you running expensive machine learning inference models, or just serving a static web page?
-  Most importantly: can you afford downtime?
+  Most importantly: can you afford downtime? can you run your database on a single node?
 
 - __What happens if the server breaks?__  
   All the `docker-compose` projects you deployed on the server will go
