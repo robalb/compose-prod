@@ -43,13 +43,13 @@ ansible-vault edit group_vars/staging/vault.yml
   Chances are this is not the question you should be asking:  
   No. This Infrastructure will run on a single-server only, and cannot scale to multiple nodes.  
   But most project will never need to scale. A single web server running on a `4$` VPS
-  can handle more than `10k` cuncurrent users depending on the workload. Know your system:
-  are you running expensive machine learning inference models, or just serving a static web page?
+  can handle more than `10k` cuncurrent users depending on the workload.  
+  Know your system: are you running expensive machine learning inference models, or just serving a static web page?
   Most importantly: can you afford downtime?
 
 - __What happens if the server breaks?__  
   All the `docker-compose` projects you deployed on the server will go
-  offline. Since all your infrastructure is stored in git and automated via Ansible, you can get a new server up and running in a few minutes, simply by running the ansible scripts again.  
+  offline. Since all your infrastructure is stored in git and automated via Ansible, you can get a new server up and running in a few minutes,just run the ansible scripts again.  
   `docker-compose` and this infrastructure are an extremely simple and cheap way to deploy your projects. This comes at the cost of less avaiabilty.
   If you cannot afford downtime, `docker-compose` on a single server is not the right way to deploy 
   your projects, and it's probably time to look at more expensive and complicated solutions.
