@@ -36,10 +36,7 @@ home/admin/
     └── docker-compose.yml
 ```
 
-each project `project-name` you define, will be copied in the same home folder.
-
-
-### Deployment overview
+## Deployment Workflow
 
 the [Deployment guide](./docs/deploy.md) covers several way to deploy your projects.  
 If you want to follow the Continuos-Deployment approach, the steps are extremely simple:
@@ -53,8 +50,11 @@ If you want to follow the Continuos-Deployment approach, the steps are extremely
       compose_path: "/compose-prod/"
       autodeploy_on_change: true
   ```
+- That's it!  
   The system will monitor your project repository, and will automatically deploy 
-  your docker-compose when you modify it.
+  your docker-compose when you modify it.  
+  If you deployed a web server, it will instantly be availabe online, with a valid TLS 
+  certificate.
 
 If you want to manually manage your projects, that's fine too!
 Just copy your docker-compose files into the server, and launch them with:
