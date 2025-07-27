@@ -1,6 +1,6 @@
 # Compose prod
 
-A template for deploying your containerized projects
+An Infrastructure-As-Code template for deploying your containerized projects
 on a single-node server.
 
 Features:
