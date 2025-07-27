@@ -1,0 +1,17 @@
+---
+version: 2
+updates:
+  - package-ecosystem: "docker-compose"
+    directory: "/roles/platform/files/docker-compose.platform.yml"
+    schedule:
+      interval: "daily"
+    # disable version updates, to receive security updates only
+    # https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference#open-pull-requests-limit-
+    open-pull-requests-limit: 0
+  - package-ecosystem: "docker-compose"
+    directory: "/roles/platform/files/docker-compose.traefik.yml"
+    schedule:
+      interval: "daily"
+    # disable version updates, to receive security updates only
+    # https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference#open-pull-requests-limit-
+    open-pull-requests-limit: 0
