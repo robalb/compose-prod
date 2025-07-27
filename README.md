@@ -1,6 +1,6 @@
 # Compose prod
 
-A template for deploying your containerized projects
+An Infrastructure-As-Code template for deploying your containerized projects
 on a single-node server.
 
 Features:
@@ -36,10 +36,8 @@ home/admin/
     └── docker-compose.yml
 ```
 
-## Deployment Workflow
-
-the [Deployment guide](./docs/deploy.md) covers several way to deploy your projects.  
-If you want to follow the Continuos-Deployment approach, the steps are extremely simple:
+To deploy your projects, you have then [several options](./docs/deploy.md).
+If you want to follow a continuos-deployment approach:
 
 - add a docker-compose file to your project repository
 - configure the `deploy.yml` file in the infrastructure repository:
@@ -50,8 +48,8 @@ If you want to follow the Continuos-Deployment approach, the steps are extremely
       compose_path: "/compose-prod/"
       autodeploy_on_change: true
   ```
-- That's it! The system will monitor your project repository, and will automatically deploy 
-  your docker-compose when you modify it.  
+- That's it! The system running on your server will monitor your project repository, and will automatically deploy 
+  your docker-compose when it detects a change. 
   If you deployed a web server, it will instantly be availabe online, with a valid TLS 
   certificate.
 
