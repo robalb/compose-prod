@@ -60,3 +60,28 @@
     name: "{{ os_configuration__admin_name }}"
     groups: docker
     append: true
+
+# https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file
+# It's extremely important to change the default docker log collector,
+# because by default docker logs will grow until they saturate the disk.
+- name: Copy the global docker daemon.json config
+  ansible.builtin.template:
+    src: docker-daemon-config.json.j2
+    dest: /etc/docker/daemon.json
+    mode: '0755'
+    owner: root
+    group: root
+  register: docker_config_copy
+
+- name: Validate Docker daemon.json config
+  ansible.builtin.command: dockerd --validate
+  changed_when: false
+  failed_when: dockerd_validate.rc != 0
+
+# Note: this operation will cause downtime
+- name: Restart docker if the daemon.json config changed
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+  when:
+    - docker_config_copy.changed
