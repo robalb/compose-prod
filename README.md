@@ -39,24 +39,31 @@ home/admin/
 each project `project-name` you define, will be copied in the same home folder.
 
 
-### Work on an existing infrastructure
+### Deployment overview
 
-Quick commands for an existing infrastructure:
+the [Deployment guide](./docs/deploy.md) covers several way to deploy your projects.  
+If you want to follow the Continuos-Deployment approach, the steps are extremely simple:
+
+- add a docker-compose file to your project repository
+- configure the `deploy.yml` file in the infrastructure repository:
+  ```
+  projects:
+    - name: "my-projet"
+      git: "https://github.com/username/repository"
+      compose_path: "/compose-prod/"
+      autodeploy_on_change: true
+  ```
+  The system will monitor your project repository, and will automatically deploy 
+  your docker-compose when you modify it.
+
+If you want to manually manage your projects, that's fine too!
+Just copy your docker-compose files into the server, and launch them with:
+
 ```
-# Check the host connection
-ansible -m ping all
-
-# Run a playbook
-ansible-playbook playbooks/playbookname.yml
-
-# View vault secrets
-ansible-vault view group_vars/all/vault.yml
-ansible-vault view group_vars/staging/vault.yml
-
-# Edit vault secrets
-ansible-vault edit group_vars/all/vault.yml
-ansible-vault edit group_vars/staging/vault.yml
+docker compose up -d
 ```
+
+Your project logs and metrics will be available on the Grafana dashboard.
 
 ## FAQ
 
