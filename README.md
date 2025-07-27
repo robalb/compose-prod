@@ -9,10 +9,12 @@ Features:
 - automatic TLS certificate generation, powered by traefik.
 - A grafana control panel to monitor the state of all your services, and their logs.  
   powered by pre-configured Prometheus, Loki, node-exporter, Container-advisor.
-- Ready out of the box: Buy a VPS, clone this project, and follow the [guide](#guide) to
+- Ready out of the box: Buy a VPS, clone this repository, and follow the [guide](#guide) to
   have your project running in a few minutes.
 
 ## Guide
+
+
 
 - [setup your computer to work on the infrastructure](./docs/devenv-setup.md)
 - [build the infrastructure from scratch](./docs/infra-from-scratch.md)
