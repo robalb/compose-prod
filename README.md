@@ -14,10 +14,10 @@ Features:
 
 ## Guide
 
-- [setup your computer to work on the infrastructure](./docs/devenv-setup.md)
-- [setup the infrastructure from scratch](./docs/infra-from-scratch.md)
-- [deploy a new project](./docs/deploy.md)
-- [Work on an existing infrastructure](#Work-on-an-existing-infrastructure)
+- [Setup your computer to work on the infrastructure](./docs/devenv-setup.md)
+- [Setup the infrastructure from scratch](./docs/infra-from-scratch.md)
+- [Deploy a new project](./docs/deploy.md)
+- [Manage an existing infrastructure](./docs/manage-existing-infra.md)
 
 ## Overview
 
