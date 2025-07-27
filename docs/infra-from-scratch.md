@@ -1,20 +1,58 @@
 # Setup the infrastructure from scratch
 
-To get started, simply Configure the host IPs in `inventory.yml`
+## Prerequisites
+
+We assume that you already have an ubuntu VPS - you can get one for less than 4€/ month on [hetzner](https://www.hetzner.com/cloud), [DigitalOcean](https://www.digitalocean.com/pricing/droplets#basic-droplets), or [OVH](www.ovhcloud.com)
+Make sure to get a server with:
+- At least `1Gb` of memory. More is better
+- `Ubuntu` as the operative system
+- Internet access, and an `IPv4` associated to the machine
+
+We also assume that you already [configured your computer](./devenv-setup.md) to work on the infrastructure.
+
+## Getting started
+
+To get started, you need to configure the IP of your server in `inventory.yml`
+
+This is an example configuration
+
+```yml
+all:
+  # all servers, listed by their identifier name.
+  # Once you add a server here, you can declare its
+  # role (for example: staging, production, test)
+  # by referencing its name in the children section
+  hosts:
+    hetzner_ubuntu_frankfurt_1:  #a descriptive name of your server
+      ansible_host: 192.88.99.42 #the ip of your server
+
+  # logical grouping of the existing servers.
+  # each group defined here can have dedicated
+  # variables defined in /group_vars/.
+  children:
+    staging:
+      hosts:
+        # TODO: add staging servers here
+    production:
+      hosts:
+        hetzner_ubuntu_frankfurt_1:
+
+
+```
 
 This infrastructure project is designed to run on hosts with the following requirements:
 - ssh enabled on port 22
 - non-root user
 - passwordless ssh access with a key already installed on your device.
 
-If the remote hosts don't have a dedicated non-root user or don't have proper ssh key access,
-run the bootstrap playbook with the instructions described in the next section.
+If this is not how you currently access your server, don't worry!
+the next paragraph include the necessary steps to setup your ssh access in the proper way.
 
-## If you have only root admin password and no ssh key
+## If you have a only root admin password and no ssh key
 
 To run the bootstrap playbook against a remote host with a root admin password:
 
-1. Define a new user in `group_vars/all/main.yml` in the `_admin_name` variable.
+1. Define the name of a new administrator user in `group_vars/all/main.yml` in the `_admin_name` variable. By default it's `admin`
 
 2. Run the ssh setup playbook
     ```

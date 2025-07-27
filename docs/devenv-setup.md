@@ -9,6 +9,17 @@ If you have windows, we recommend to set up WSL for linux, with ubuntu. see: [in
 
 Once installed you will have an ubuntu terminal inside windows, which you can use to perform all the commands described in this documentation
 
+## 0. Clone this repository
+
+[fork this repository](https://github.com/robalb/compose-prod/fork) if you haven't already.
+
+Then [Clone the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) and navigate into it:
+
+```
+git clone https://github.com/YOUR-USERNAME/compose-prod
+cd compose-prod
+```
+
 ## 1. Install Ansible
 
    This repository includes a pinned version of Ansible and all its dependencies.
