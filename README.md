@@ -49,8 +49,8 @@ ansible-vault edit group_vars/staging/vault.yml
 
 - __What happens if the server breaks?__  
   All the `docker-compose` projects you deployed on the server will go
-  offline. Since all your infrastructure is stored in git and automated via Ansible, you can get a new server up and running in a few minutes,just run the ansible scripts again.  
-  `docker-compose` and this infrastructure are an extremely simple and cheap way to deploy your projects. This comes at the cost of less avaiabilty.
+  offline. Since all your infrastructure is stored in git and automated via Ansible, you can get a new server up and running in a few minutes: just run the Ansible scripts again.  
+  This is an extremely simple and cheap way to deploy your projects, but it comes at the cost of less availabilty.
   If you cannot afford downtime, `docker-compose` on a single server is not the right way to deploy 
   your projects, and it's probably time to look at more expensive and complicated solutions.
 

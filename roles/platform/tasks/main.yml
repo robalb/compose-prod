@@ -1,10 +1,18 @@
 ---
-- name: Create the traefik proxy docker network
-  docker_network:
-    name: traefik-proxy
+- name: Check if the traefik-proxy Docker network exists
+  ansible.builtin.shell: |
+    docker network ls --format '{{ "{{.Name}}" }}' | grep -w traefik-proxy
+  register: traefik_network_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Create the traefik-proxy Docker network if it doesn't exist
+  ansible.builtin.command: docker network create traefik-proxy
+  when: traefik_network_check.rc != 0
+  changed_when: true
 
 - name: Ensure the platform folder exists
-  file:
+  ansible.builtin.file:
     path: "{{ platform__folder }}"
     state: directory
     owner: "{{ platform__admin_name }}"
@@ -12,8 +20,8 @@
     mode: '0755'
 
 - name: Synchronize platform docker compose
-  synchronize:
-    src: "{{ role_path }}/files/platform_services/"
+  ansible.posix.synchronize:
+    src: "{{ role_path }}/files/"
     dest: "{{ platform__folder }}"
     recursive: true
     delete: true       # deletes files in dest not present in src
@@ -21,7 +29,7 @@
       - "--chmod=755"
 
 - name: Generate the .env file for the platform docker compose
-  copy:
+  ansible.builtin.copy:
     dest: "{{ platform__folder }}.env"
     content: |
       BASE_DOMAIN={{ platform__base_domain }}
