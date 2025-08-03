@@ -1,14 +1,12 @@
 ---
-- name: Check if the traefik-proxy Docker network exists
-  ansible.builtin.shell: |
-    docker network ls --format '{{ "{{.Name}}" }}' | grep -w traefik-proxy
-  register: traefik_network_check
-  ignore_errors: true
+- name: List all docker networks
+  ansible.builtin.command: docker network ls --format '{{ "{{.Name}}" }}'
+  register: all_docker_networks
   changed_when: false
 
 - name: Create the traefik-proxy Docker network if it doesn't exist
   ansible.builtin.command: docker network create traefik-proxy
-  when: traefik_network_check.rc != 0
+  when: "'traefik-proxy' not in all_docker_networks.stdout_lines"
   changed_when: true
 
 - name: Ensure the platform folder exists
