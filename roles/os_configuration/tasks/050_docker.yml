@@ -2,7 +2,6 @@
 # https://docs.docker.com/engine/install/ubuntu/#set-up-the-repository
 # TODO: follow
 # https://github.com/kubernetes-sigs/kubespray/blob/master/roles/container-engine/docker/tasks/main.yml
-# TODO: docker config, disable logging
 ---
 - name: install docker requirements
   ansible.builtin.apt:
