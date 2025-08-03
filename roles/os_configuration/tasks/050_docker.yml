@@ -76,6 +76,7 @@
 - name: Validate Docker daemon.json config
   ansible.builtin.command: dockerd --validate
   changed_when: false
+  register: dockerd_validate
   failed_when: dockerd_validate.rc != 0
 
 # Note: this operation will cause downtime
