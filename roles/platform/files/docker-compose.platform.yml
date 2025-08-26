@@ -9,7 +9,7 @@ networks:
 
 services:
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:12.1.0
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -26,7 +26,7 @@ services:
       - traefik-proxy
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v3.5.0
     restart: unless-stopped
     user: root
     volumes:
@@ -44,7 +44,7 @@ services:
       - traefik-proxy
 
   node-exporter:
-    image: prom/node-exporter
+    image: prom/node-exporter:v1.9.1
     restart: unless-stopped
     volumes:
       - /proc:/host/proc:ro
@@ -59,7 +59,7 @@ services:
       - traefik-proxy
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    image: gcr.io/cadvisor/cadvisor:v0.52.0
     restart: unless-stopped
     # https://github.com/google/cadvisor/issues/2523#issuecomment-785094428
     command:
@@ -88,6 +88,7 @@ services:
       - traefik-proxy
 
   promtail:
+    #TODO update. this will require breaking configuration changes
     image: grafana/promtail:2.8.0
     restart: unless-stopped
     volumes:
