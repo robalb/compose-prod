@@ -25,14 +25,8 @@
     group: "{{ platform__admin_name }}"
     mode: '0755'
 
-    # - name: rerun docker compose
-    #   shell: cd /home/al/control-plane && docker compose up -d
-    #   register: output
-
-    # - name: Show stdout
-    #   ansible.builtin.debug:
-    #     var: output.stdout_lines
-    # - name: Show stderr
-    #   ansible.builtin.debug:
-    #     var: output.stderr_lines
-
+    # note: we will not rerun docker compose up on the ingress to avoid downtime
+    # TODO:
+    # - check if ingress is up.
+    # - if ingress is not up, run docker compose up
+    # - if docker compose command failed, print stdout|stderr

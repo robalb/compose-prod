@@ -24,3 +24,9 @@
     owner: "{{ platform__admin_name }}"
     group: "{{ platform__admin_name }}"
     mode: '0755'
+
+    # TODO:
+    # - check if previous fsync changed
+    # - check if compose is up
+    # - if compose is down, or if files changed, run docker compose up again
+    # - if docker compose command failed, print stdout|stderr
