@@ -1,1 +1,3 @@
-platform__folder: "/home/{{ platform__admin_name }}/platform/"
+platform__enable_monitoring: true
+platform__monitoring_folder: "/home/{{ platform__admin_name }}/platform_monitoring/"
+platform__ingress_folder: "/home/{{ platform__admin_name }}/platform_ingress/"

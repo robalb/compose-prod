@@ -1,0 +1,38 @@
+---
+- name: Ensure the platform ingress folder exists
+  ansible.builtin.file:
+    path: "{{ platform__ingress_folder }}"
+    state: directory
+    owner: "{{ platform__admin_name }}"
+    group: "{{ platform__admin_name }}"
+    mode: '0755'
+
+- name: Synchronize platform ingress docker compose
+  ansible.posix.synchronize:
+    src: "{{ role_path }}/files/ingress/"
+    dest: "{{ platform__ingress_folder }}"
+    recursive: true
+    checksum: true
+    rsync_opts:
+      - "--chmod=755"
+
+- name: Generate the .env file for the platform docker compose
+  ansible.builtin.copy:
+    dest: "{{ platform__ingress_folder }}.env"
+    content: |
+      BASE_DOMAIN={{ platform__base_domain }}
+    owner: "{{ platform__admin_name }}"
+    group: "{{ platform__admin_name }}"
+    mode: '0755'
+
+    # - name: rerun docker compose
+    #   shell: cd /home/al/control-plane && docker compose up -d
+    #   register: output
+
+    # - name: Show stdout
+    #   ansible.builtin.debug:
+    #     var: output.stdout_lines
+    # - name: Show stderr
+    #   ansible.builtin.debug:
+    #     var: output.stderr_lines
+

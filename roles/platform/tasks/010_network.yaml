@@ -1,0 +1,10 @@
+---
+- name: List all docker networks
+  ansible.builtin.command: docker network ls --format '{{ "{{.Name}}" }}'
+  register: all_docker_networks
+  changed_when: false
+
+- name: Create the traefik-proxy Docker network if it doesn't exist
+  ansible.builtin.command: docker network create traefik-proxy
+  when: "'traefik-proxy' not in all_docker_networks.stdout_lines"
+  changed_when: true

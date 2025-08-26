@@ -1,0 +1,26 @@
+---
+- name: Ensure the platform monitoring folder exists
+  ansible.builtin.file:
+    path: "{{ platform__monitoring_folder }}"
+    state: directory
+    owner: "{{ platform__admin_name }}"
+    group: "{{ platform__admin_name }}"
+    mode: '0755'
+
+- name: Synchronize platform monitoring docker compose
+  ansible.posix.synchronize:
+    src: "{{ role_path }}/files/monitoring/"
+    dest: "{{ platform__monitoring_folder }}"
+    recursive: true
+    checksum: true
+    rsync_opts:
+      - "--chmod=755"
+
+- name: Generate the .env file for the platform docker compose
+  ansible.builtin.copy:
+    dest: "{{ platform__monitoring_folder }}.env"
+    content: |
+      BASE_DOMAIN={{ platform__base_domain }}
+    owner: "{{ platform__admin_name }}"
+    group: "{{ platform__admin_name }}"
+    mode: '0755'
