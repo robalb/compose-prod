@@ -22,7 +22,7 @@
     src: "{{ role_path }}/files/"
     dest: "{{ platform__folder }}"
     recursive: true
-    delete: true       # deletes files in dest not present in src
+    checksum: true
     rsync_opts:
       - "--chmod=755"
 
