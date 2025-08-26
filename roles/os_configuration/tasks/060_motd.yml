@@ -11,12 +11,14 @@
   register: motd_files
   when: motd_dir.stat.exists
 
-- name: Disable all executable scripts in /etc/update-motd.d
+- name: Remove all MOTD scripts except 00-custom-motd
   file:
     path: "{{ item.path }}"
-    mode: '0644'
+    state: absent
   loop: "{{ motd_files.files }}"
-  when: motd_dir.stat.exists
+  when:
+    - motd_dir.stat.exists
+    - item.path | basename != "00-custom-motd"
 
 - name: Deploy custom MOTD script
   template:
