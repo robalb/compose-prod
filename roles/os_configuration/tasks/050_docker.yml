@@ -61,7 +61,7 @@
     append: true
 
 # https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file
-# It's extremely important to change the default docker log collector,
+# Set a custom confuguration for the docker log module,
 # because by default docker logs will grow until they saturate the disk.
 - name: Copy the global docker daemon.json config
   ansible.builtin.template:
