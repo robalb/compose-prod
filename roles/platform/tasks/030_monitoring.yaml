@@ -1,5 +1,5 @@
 ---
-- name: Ensure the platform monitoring folder exists
+- name: monitoring - Ensure the compose folder exists
   ansible.builtin.file:
     path: "{{ platform__monitoring_folder }}"
     state: directory
@@ -7,7 +7,7 @@
     group: "{{ platform__admin_name }}"
     mode: '0755'
 
-- name: Synchronize platform monitoring docker compose
+- name: monitoring - Synchronize the compose folder
   ansible.posix.synchronize:
     src: "{{ role_path }}/files/monitoring/"
     dest: "{{ platform__monitoring_folder }}"
@@ -15,8 +15,9 @@
     checksum: true
     rsync_opts:
       - "--chmod=755"
+  register: fact__monitoring_sync
 
-- name: Generate the .env file for the platform docker compose
+- name: monitoring - Generate the .env file for the docker compose
   ansible.builtin.copy:
     dest: "{{ platform__monitoring_folder }}.env"
     content: |
@@ -25,8 +26,47 @@
     group: "{{ platform__admin_name }}"
     mode: '0755'
 
-    # TODO:
-    # - check if previous fsync changed
-    # - check if compose is up
-    # - if compose is down, or if files changed, run docker compose up again
-    # - if docker compose command failed, print stdout|stderr
+# note: We don't want to rerun 'docker compose up' unnecessarily, because
+# the operation causes a brief downtime. But compared to the ingress module,
+# here we can afford the downtime when an update needs to be applied.
+# This is why the following steps perform the following actions:
+# - check if the previous fsync had any changes.
+# - If the services are not up, or there were changes, run docker compose up
+# - if docker compose command didn't fail, print stdout|stderr
+
+- name: monitoring - Get all active docker compose services
+  ansible.builtin.command: >
+    docker ps
+      --filter "label=com.docker.compose.project"
+     {% raw %}
+      --format '{{.Label "com.docker.compose.project.working_dir"}}'
+     {% endraw %}
+  register: fact__active_services
+  changed_when: false
+
+- name: monitoring - Check if the compose services are up
+  set_fact:
+    fact__monitoring_service_is_up: >-
+      {{
+        ( platform__monitoring_folder | regex_replace('/$', '')
+        in fact__active_services.stdout_lines) | bool
+      }}
+
+- name: monitoring - Start docker compose service
+  when: not fact__monitoring_service_is_up or fact__monitoring_sync.changed
+  block:
+    - name: monitoring - Start docker compose service
+      command: docker compose up -d
+      args:
+        chdir: "{{ platform__monitoring_folder }}"
+      register: compose_result
+      failed_when: compose_result.rc != 0
+      changed_when: compose_result.rc == 0
+
+    - name: monitoring - Print compose up stdout
+      debug:
+        msg: "{{ compose_result.stdout }}"
+
+    - name: monitoring - Print compose up stderr
+      debug:
+        msg: "{{ compose_result.stderr }}"
