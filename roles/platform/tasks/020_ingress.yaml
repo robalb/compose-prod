@@ -1,5 +1,5 @@
 ---
-- name: Ensure the platform ingress folder exists
+- name: ingress - Ensure the compose folder exists
   ansible.builtin.file:
     path: "{{ platform__ingress_folder }}"
     state: directory
@@ -7,7 +7,7 @@
     group: "{{ platform__admin_name }}"
     mode: '0755'
 
-- name: Synchronize platform ingress docker compose
+- name: ingress - Synchronize the compose folder
   ansible.posix.synchronize:
     src: "{{ role_path }}/files/ingress/"
     dest: "{{ platform__ingress_folder }}"
@@ -16,7 +16,7 @@
     rsync_opts:
       - "--chmod=755"
 
-- name: Generate the .env file for the platform docker compose
+- name: ingress - Generate the .env file for the docker compose
   ansible.builtin.copy:
     dest: "{{ platform__ingress_folder }}.env"
     content: |
@@ -29,9 +29,9 @@
 # This is why the following steps perform the following actions:
 # - check if the ingress is up.
 # - Only when the ingress is NOT up, run docker compose up
-# - if docker compose command failed, print stdout|stderr
+# - if docker compose command didn't fail, print stdout|stderr
 
-- name: Get all active docker compose services
+- name: ingress - Get all active docker compose services
   ansible.builtin.command: >
     docker ps
       --filter "label=com.docker.compose.project"
@@ -41,7 +41,7 @@
   register: fact__active_services
   changed_when: false
 
-- name: Check if the ingress service is up
+- name: ingress - Check if the compose service is up
   set_fact:
     fact__ingress_service_is_up: >-
       {{
@@ -49,10 +49,10 @@
         in fact__active_services.stdout_lines) | bool
       }}
 
-- name: Start ingress docker compose service
+- name: ingress - Start docker compose service
   when: not fact__ingress_service_is_up
   block:
-    - name: Start ingress docker compose service
+    - name: ingress - Start docker compose service
       command: docker compose up -d
       args:
         chdir: "{{ platform__ingress_folder }}"
@@ -60,11 +60,10 @@
       failed_when: compose_result.rc != 0
       changed_when: compose_result.rc == 0
 
-  rescue:
-    - name: Print stdout if docker compose up failed
+    - name: ingress - Print compose up stdout
       debug:
-        msg: "{{ compose_result.stdout | default('') }}"
+        msg: "{{ compose_result.stdout }}"
 
-    - name: Print stderr if docker compose up failed
+    - name: ingress - Print compose up stderr
       debug:
-        msg: "{{ compose_result.stderr | default('') }}"
+        msg: "{{ compose_result.stderr }}"
