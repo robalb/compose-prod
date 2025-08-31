@@ -25,8 +25,46 @@
     group: "{{ platform__admin_name }}"
     mode: '0755'
 
-    # note: we will not rerun docker compose up on the ingress to avoid downtime
-    # TODO:
-    # - check if ingress is up.
-    # - if ingress is not up, run docker compose up
-    # - if docker compose command failed, print stdout|stderr
+# note: We don't want to rerun 'docker compose up' on the ingress to avoid downtime.
+# This is why the following steps perform the following actions:
+# - check if the ingress is up.
+# - Only when the ingress is NOT up, run docker compose up
+# - if docker compose command failed, print stdout|stderr
+
+- name: Get all active docker compose services
+  ansible.builtin.command: >
+    docker ps
+      --filter "label=com.docker.compose.project"
+     {% raw %}
+      --format '{{.Label "com.docker.compose.project.working_dir"}}'
+     {% endraw %}
+  register: fact__active_services
+  changed_when: false
+
+- name: Check if the ingress service is up
+  set_fact:
+    fact__ingress_service_is_up: >-
+      {{
+        ( platform__ingress_folder | regex_replace('/$', '')
+        in fact__active_services.stdout_lines) | bool
+      }}
+
+- name: Start ingress docker compose service
+  when: not fact__ingress_service_is_up
+  block:
+    - name: Start ingress docker compose service
+      command: docker compose up -d
+      args:
+        chdir: "{{ platform__ingress_folder }}"
+      register: compose_result
+      failed_when: compose_result.rc != 0
+      changed_when: compose_result.rc == 0
+
+  rescue:
+    - name: Print stdout if docker compose up failed
+      debug:
+        msg: "{{ compose_result.stdout | default('') }}"
+
+    - name: Print stderr if docker compose up failed
+      debug:
+        msg: "{{ compose_result.stderr | default('') }}"
