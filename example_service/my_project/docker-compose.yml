@@ -1,0 +1,32 @@
+# This network will make your services accessible to 
+# the Traefik proxy. It's required if you want to deploy 
+# a web service.
+networks:
+  traefik-proxy:
+    external: true
+  default: null
+
+services:
+  my_website:
+    image: nginx:latest
+    restart: unless-stopped
+    labels:
+      # by adding these labels, the Traefik ingress will recognize you want 
+      # to serve the website as `example.halb.it`, and will register a TLS certificate for it
+      - traefik.enable=true
+      - traefik.http.routers.my_project.rule=Host(`example.halb.it`)
+      - traefik.http.routers.my_project.entrypoints=websecure
+      - traefik.http.routers.my_project.tls=true
+      - traefik.http.routers.my_project.tls.certresolver=myresolver
+    networks:
+      # This network will make your services accessible to 
+      # the Traefik proxy. It's required if you want to deploy 
+      # a web service.
+      - traefik-proxy
+    deploy:
+      resources:
+        # Limits will make sure that an eventual mistake in your application
+        # or a traffic spike will not consume all the resources of the server.
+        limits:
+          cpus: '0.2'
+          memory: 500M
