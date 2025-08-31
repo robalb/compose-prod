@@ -3,7 +3,7 @@
 # Configurable variables
 PROJECT_FOLDER ?= my_project
 REMOTE_USER    ?= al
-REMOTE_HOST    ?= deviceid
+REMOTE_HOST    ?= examplehost
 REMOTE_PATH    ?= /home/$(REMOTE_USER)/$(PROJECT_FOLDER)
 
 # Default target
