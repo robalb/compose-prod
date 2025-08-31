@@ -2,7 +2,7 @@
 
 # Configurable variables
 PROJECT_FOLDER ?= my_project
-REMOTE_USER    ?= al
+REMOTE_USER    ?= admin
 REMOTE_HOST    ?= examplehost
 REMOTE_PATH    ?= /home/$(REMOTE_USER)/$(PROJECT_FOLDER)
 
