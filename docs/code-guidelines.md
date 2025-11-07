@@ -4,6 +4,8 @@
 The ansible code in this project follows the following 
 guidelines and practices:
 https://redhat-cop.github.io/automation-good-practices/
+you can also read these tips: https://thomascfoulds.com/2021/09/29/25-tips-for-using-ansible-in-large-projects.html
+
 
 There is an additional experimental practice in the management of variables,
 which is described in the next section:
